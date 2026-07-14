@@ -9,9 +9,8 @@ Demo bisa dicoba langsung di sini: https://panduansholat.gamer.free/index.php?mo
 Urutan gerakan, bacaan, dan tata cara sholat yang dipakai di aplikasi ini mengacu pada **Himpunan Putusan Tarjih (HPT) Muhammadiyah**, khususnya bagian yang membahas tuntunan sholat. Kalau ada perbedaan lafal atau urutan dengan sumber lain (mazhab/kitab lain), silakan sesuaikan sendiri isi teksnya di `database/schema.sql` — kami cuma isi versi dasarnya sesuai rujukan di atas, jadi kalau dosen atau pembimbing minta versi lain tinggal diedit.
 
 Referensi yang dipakai:
-- Situs resmi Majelis Tarjih dan Tajdid PP Muhammadiyah: http://tarjih.muhammadiyah.or.id/download-fatwa.html
+- Tuntunan Bacaan Sholat Menurut Pemahaman Muhammadiyah (PDM Kota Semarang, rujukan HPT lengkap per gerakan): https://muhammadiyahsemarangkota.org/tuntunan-bacaan-sholat-menurut-pemahaman-muhammadiyah/
 - Teks bacaan salat sesuai HPT Muhammadiyah (Badan AIK UMSU): https://bim.umsu.ac.id/bacaan-salat-sesuai-himpunan-putusan-tarjih-muhammadiyah/
-- Buku Himpunan Putusan Tarjih (versi PDF, arsip publik): https://archive.org/details/HimpunanPutusanTarjih_201601
 
 Kalau link di atas ada yang berubah/mati, tinggal cari ulang lewat kata kunci "Himpunan Putusan Tarjih Muhammadiyah" di situs resmi Muhammadiyah, karena beberapa link cabang/pihak ketiga suka dipindah-pindah.
 
