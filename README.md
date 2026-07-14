@@ -1,9 +1,21 @@
 # Panduan Sholat Interaktif
 
-Aplikasi web PHP Native + MySQL untuk menampilkan gerakan dan bacaan sholat
-secara terstruktur, dengan dua mode pengguna (Dewasa & Anak-anak).
+Ini adalah aplikasi web sederhana buat belajar gerakan dan bacaan sholat, dibuat pakai PHP Native + MySQL. Ada dua mode tampilan: Dewasa dan Anak-anak, jadi bisa dipakai buat berbagai kalangan usia.
 
-## Struktur Arsitektur
+Demo bisa dicoba langsung di sini: https://panduansholat.gamer.free/index.php?mode=dewasa
+
+## Sumber Rujukan
+
+Urutan gerakan, bacaan, dan tata cara sholat yang dipakai di aplikasi ini mengacu pada **Himpunan Putusan Tarjih (HPT) Muhammadiyah**, khususnya bagian yang membahas tuntunan sholat. Kalau ada perbedaan lafal atau urutan dengan sumber lain (mazhab/kitab lain), silakan sesuaikan sendiri isi teksnya di `database/schema.sql` — kami cuma isi versi dasarnya sesuai rujukan di atas, jadi kalau dosen atau pembimbing minta versi lain tinggal diedit.
+
+Referensi yang dipakai:
+- Situs resmi Majelis Tarjih dan Tajdid PP Muhammadiyah: http://tarjih.muhammadiyah.or.id/download-fatwa.html
+- Teks bacaan salat sesuai HPT Muhammadiyah (Badan AIK UMSU): https://bim.umsu.ac.id/bacaan-salat-sesuai-himpunan-putusan-tarjih-muhammadiyah/
+- Buku Himpunan Putusan Tarjih (versi PDF, arsip publik): https://archive.org/details/HimpunanPutusanTarjih_201601
+
+Kalau link di atas ada yang berubah/mati, tinggal cari ulang lewat kata kunci "Himpunan Putusan Tarjih Muhammadiyah" di situs resmi Muhammadiyah, karena beberapa link cabang/pihak ketiga suka dipindah-pindah.
+
+## Arsitektur Singkat
 
 ```
 Front-end  -> HTML/CSS/JS (assets/, includes/header.php, includes/footer.php)
@@ -11,57 +23,42 @@ Back-end   -> PHP Native, PDO (includes/functions.php, config/db.php)
 Database   -> MySQL/MariaDB (database/schema.sql)
 ```
 
-Seluruh konten gerakan & bacaan **diambil dari database**, tidak ditulis
-statis di HTML (lihat `includes/functions.php` -> `getAllGerakan()`,
-`getGerakanByUrutan()`), sesuai kebutuhan F-09.
+Semua konten gerakan dan bacaan diambil dari database lewat `getAllGerakan()` dan `getGerakanByUrutan()` di `includes/functions.php`. Tidak ada teks gerakan/bacaan yang ditulis manual di HTML.
 
-## 1. Setup Lokal (XAMPP/Laragon/MAMP)
+## 1. Cara Jalanin di Lokal (XAMPP/Laragon/MAMP)
 
-1. Salin folder `sholat-app` ke folder `htdocs` (XAMPP) atau `www` (Laragon).
-2. Buka phpMyAdmin, buat database baru (atau biarkan, sudah dibuat otomatis
-   dari file SQL), lalu **import** file `database/schema.sql`.
-3. Buka `config/db.php`, sesuaikan `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`
-   dengan kredensial MySQL lokal (default XAMPP: user `root`, password kosong).
-4. Akses melalui browser: `http://localhost/sholat-app/`
+1. Copy folder `sholat-app` ke `htdocs` (XAMPP) atau `www` (Laragon).
+2. Buka phpMyAdmin, bikin database baru, terus import `database/schema.sql`.
+3. Buka `config/db.php`, sesuaikan `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS` dengan MySQL lokal kalian (default XAMPP biasanya user `root` tanpa password).
+4. Akses lewat browser: `http://localhost/sholat-app/`
 
-## 2. Mengisi Identitas Kelompok
+## 2. Isi Identitas Kelompok
 
-Buka phpMyAdmin -> tabel `pengaturan` -> edit baris pertama, isi:
-
+Buka phpMyAdmin, masuk ke tabel `pengaturan`, edit baris pertama dan isi:
 - `nama_kelompok`
 - `program_studi`
 - `mata_kuliah`
 - `nama_dosen`
 
-Nilai ini otomatis tampil di header setiap halaman. Nilai bawaan di
-`schema.sql` hanyalah placeholder ("Kelompok 1", dst.)
+Data ini otomatis muncul di header tiap halaman. Nilai bawaan di `schema.sql` cuma placeholder ("Kelompok 1", dst), jangan lupa diganti.
 
-## 3. Menambahkan Audio & Video
+## 3. Nambahin Audio & Video
 
-- Letakkan file MP3 bacaan di `assets/audio/` dengan nama sesuai kolom
-  `audio_file` pada tabel `bacaan` (mis. `assets/audio/04-fatihah.mp3`).
-- Untuk video, isi kolom `video_url` pada tabel `gerakan` dengan URL embed
-  (mis. `https://www.youtube.com/embed/ID_VIDEO`). Jika kosong, tombol video
-  akan menampilkan pesan bahwa video belum ditambahkan.
+- File MP3 bacaan diletakkan di `assets/audio/`, namanya harus sama dengan kolom `audio_file` di tabel `bacaan` (contoh: `assets/audio/04-fatihah.mp4`).
+- Untuk video, isi kolom `video_url` di tabel `gerakan` dengan link embed (contoh: `assets/audio/04-fatihah.mp4`). Kalau kosong, nanti tombol video cuma nampilin pesan "video belum ditambahkan".
 
-## 4. Deploy Online (Daring)
+## 4. Deploy Online
 
-**Opsi A — InfinityFree / shared hosting PHP gratis:**
+**Opsi A — Shared hosting gratis (InfinityFree, dsb)**
+1. Bikin akun & database MySQL di panel hosting (cPanel/Vista Panel).
+2. Import `database/schema.sql` lewat phpMyAdmin bawaan hosting.
+3. Upload semua isi folder `sholat-app` ke `htdocs`/`public_html` (File Manager atau FTP).
+4. Edit `config/db.php` sesuai kredensial database dari hosting (host biasanya bukan `localhost`, cek di info database panel).
 
-1. Buat akun & database MySQL di panel hosting (cPanel/Vista Panel).
-2. Import `database/schema.sql` lewat phpMyAdmin yang disediakan hosting.
-3. Upload seluruh isi folder `sholat-app` ke `htdocs`/`public_html` via
-   File Manager atau FTP.
-4. Edit `config/db.php` dengan kredensial database dari hosting (host
-   biasanya bukan `localhost`, cek info database di panel).
-
-**Opsi B — Railway / Render (kontainer):**
-
-1. Tambahkan MySQL sebagai add-on/plugin di project.
-2. Jalankan isi `database/schema.sql` melalui koneksi database yang diberikan.
-3. Deploy kode PHP (butuh image PHP+Apache, mis. `richarvey/nginx-php-fpm`
-   atau Dockerfile PHP sederhana) dan set environment variable koneksi DB
-   sesuai `config/db.php`.
+**Opsi B — Railway / Render (kontainer)**
+1. Tambahkan MySQL sebagai add-on di project.
+2. Jalankan `database/schema.sql` lewat koneksi database yang disediakan.
+3. Deploy kode PHP-nya (butuh image PHP+Apache, misal `richarvey/nginx-php-fpm` atau Dockerfile PHP sederhana), set environment variable koneksi DB sesuai `config/db.php`.
 
 ## 5. Struktur File
 
@@ -79,30 +76,26 @@ sholat-app/
 │   ├── css/style.css
 │   ├── js/app.js           # Toggle video, autoplay berurutan
 │   ├── images/*.svg         # Ilustrasi tiap gerakan
-│   ├── audio/               # Taruh file mp3 di sini
+│   ├── audio/               # Taruh file mp4 di sini
 │   └── video/
 └── database/
     └── schema.sql          # CREATE TABLE + data gerakan & bacaan lengkap
 ```
 
-## 6. Fitur yang Sudah Diimplementasikan
+## 6. Fitur yang Udah Jalan
 
-| Kode | Fitur                                    | Status                           |
-| ---- | ---------------------------------------- | -------------------------------- |
-| F-01 | Daftar gerakan sholat                    | ✅ `index.php`                   |
-| F-02 | Detail gerakan (gambar + bacaan 4 lapis) | ✅ `gerakan.php`                 |
-| F-03 | Audio bacaan                             | ✅ tag `<audio>` per bacaan      |
-| F-04 | Opsi video                               | ✅ tombol toggle                 |
-| F-05 | Navigasi Next/Previous                   | ✅                               |
-| F-06 | Autoplay berurutan                       | ✅ `assets/js/app.js`            |
-| F-07 | Mode Dewasa & Anak                       | ✅ toggle di header, session PHP |
-| F-08 | Identitas di header                      | ✅ dari tabel `pengaturan`       |
-| F-09 | Konten dari database                     | ✅ PDO, tidak hardcode           |
+| Kode | Fitur | Keterangan |
+|------|-------|------------|
+| F-01 | Daftar gerakan sholat | `index.php` |
+| F-02 | Detail gerakan (gambar + bacaan 4 lapis) | `gerakan.php` |
+| F-03 | Audio bacaan | tag `<audio>` per bacaan |
+| F-04 | Opsi video | tombol toggle |
+| F-05 | Navigasi Next/Previous | sudah ada |
+| F-06 | Autoplay berurutan | `assets/js/app.js` |
+| F-07 | Mode Dewasa & Anak | toggle di header, pakai session PHP |
+| F-08 | Identitas di header | ambil dari tabel `pengaturan` |
+| F-09 | Konten dari database | PDO, gak ada yang hardcode |
 
-## 7. Catatan Konten
+## 7. Catatan Isi Konten
 
-Bacaan mencakup 13 langkah: Niat, Takbiratul Ihram, Doa Iftitah, Al-Fatihah,
-Surah pendek (Al-Ikhlas), Ruku', I'tidal, Sujud (2x), Duduk di antara dua
-sujud, Tasyahud Awal, Tasyahud Akhir, dan Salam. Silakan sesuaikan/lengkapi
-teks di `database/schema.sql` sesuai mazhab/referensi yang dipakai dosen
-kalian.
+Bacaan yang dicover ada 13 langkah: Niat, Takbiratul Ihram, Doa Iftitah, Al-Fatihah, surah pendek (Al-Ikhlas), Ruku', I'tidal, Sujud (2x), Duduk di antara dua sujud, Tasyahud Awal, Tasyahud Akhir, dan Salam. Urutan dan lafalnya mengikuti tuntunan di HPT Muhammadiyah — kalau kelompok kalian mau pakai referensi lain atau perlu nambah catatan dari dosen, tinggal edit langsung teksnya di `database/schema.sql`.
