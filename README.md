@@ -1,68 +1,108 @@
-Panduan Sholat Interaktif
+# Panduan Sholat Interaktif
 
-Aplikasi web sederhana untuk belajar gerakan dan bacaan sholat, dibuat pakai PHP native (tanpa framework) dan MySQL. Ada dua mode tampilan: mode dewasa (bacaan lengkap) dan mode anak-anak (bahasa lebih sederhana).
+Aplikasi web PHP Native + MySQL untuk menampilkan gerakan dan bacaan sholat
+secara terstruktur, dengan dua mode pengguna (Dewasa & Anak-anak).
 
-Project ini dibuat untuk tugas mata kuliah AIK, oleh Muhammad Kasyful Azim, Feprian, Rifa Rakha Hafizhta, Muhammad Habibi, Nabil Yumn Afif.
+## Struktur Arsitektur
 
-Isi Project
+```
+Front-end  -> HTML/CSS/JS (assets/, includes/header.php, includes/footer.php)
+Back-end   -> PHP Native, PDO (includes/functions.php, config/db.php)
+Database   -> MySQL/MariaDB (database/schema.sql)
+```
 
+Seluruh konten gerakan & bacaan **diambil dari database**, tidak ditulis
+statis di HTML (lihat `includes/functions.php` -> `getAllGerakan()`,
+`getGerakanByUrutan()`), sesuai kebutuhan F-09.
+
+## 1. Setup Lokal (XAMPP/Laragon/MAMP)
+
+1. Salin folder `sholat-app` ke folder `htdocs` (XAMPP) atau `www` (Laragon).
+2. Buka phpMyAdmin, buat database baru (atau biarkan, sudah dibuat otomatis
+   dari file SQL), lalu **import** file `database/schema.sql`.
+3. Buka `config/db.php`, sesuaikan `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`
+   dengan kredensial MySQL lokal (default XAMPP: user `root`, password kosong).
+4. Akses melalui browser: `http://localhost/sholat-app/`
+
+## 2. Mengisi Identitas Kelompok
+
+Buka phpMyAdmin -> tabel `pengaturan` -> edit baris pertama, isi:
+
+- `nama_kelompok`
+- `program_studi`
+- `mata_kuliah`
+- `nama_dosen`
+
+Nilai ini otomatis tampil di header setiap halaman. Nilai bawaan di
+`schema.sql` hanyalah placeholder ("Kelompok 1", dst.)
+
+## 3. Menambahkan Audio & Video
+
+- Letakkan file MP3 bacaan di `assets/audio/` dengan nama sesuai kolom
+  `audio_file` pada tabel `bacaan` (mis. `assets/audio/04-fatihah.mp3`).
+- Untuk video, isi kolom `video_url` pada tabel `gerakan` dengan URL embed
+  (mis. `https://www.youtube.com/embed/ID_VIDEO`). Jika kosong, tombol video
+  akan menampilkan pesan bahwa video belum ditambahkan.
+
+## 4. Deploy Online (Daring)
+
+**Opsi A — InfinityFree / shared hosting PHP gratis:**
+
+1. Buat akun & database MySQL di panel hosting (cPanel/Vista Panel).
+2. Import `database/schema.sql` lewat phpMyAdmin yang disediakan hosting.
+3. Upload seluruh isi folder `sholat-app` ke `htdocs`/`public_html` via
+   File Manager atau FTP.
+4. Edit `config/db.php` dengan kredensial database dari hosting (host
+   biasanya bukan `localhost`, cek info database di panel).
+
+**Opsi B — Railway / Render (kontainer):**
+
+1. Tambahkan MySQL sebagai add-on/plugin di project.
+2. Jalankan isi `database/schema.sql` melalui koneksi database yang diberikan.
+3. Deploy kode PHP (butuh image PHP+Apache, mis. `richarvey/nginx-php-fpm`
+   atau Dockerfile PHP sederhana) dan set environment variable koneksi DB
+   sesuai `config/db.php`.
+
+## 5. Struktur File
+
+```
 sholat-app/
-├── index.php            -> halaman daftar gerakan sholat
-├── gerakan.php           -> halaman detail per gerakan (gambar, bacaan, audio, video)
-├── daftar-gerakan.php
+├── index.php              # Daftar gerakan (F-01)
+├── gerakan.php             # Detail gerakan + bacaan + navigasi (F-02–F-06)
 ├── config/
-│   └── db.php             -> koneksi ke database
+│   └── db.php              # Koneksi database
 ├── includes/
-│   ├── functions.php      -> query-query ke database
-│   ├── header.php
+│   ├── functions.php       # Query ke database (back-end)
+│   ├── header.php          # Header + identitas + mode switch
 │   └── footer.php
 ├── assets/
-│   ├── css/
-│   ├── js/
-│   ├── images/
-│   ├── audio/
+│   ├── css/style.css
+│   ├── js/app.js           # Toggle video, autoplay berurutan
+│   ├── images/*.svg         # Ilustrasi tiap gerakan
+│   ├── audio/               # Taruh file mp3 di sini
 │   └── video/
 └── database/
-    └── schema.sql          -> struktur tabel + data awal
+    └── schema.sql          # CREATE TABLE + data gerakan & bacaan lengkap
+```
 
-Cara Jalanin di Lokal
+## 6. Fitur yang Sudah Diimplementasikan
 
+| Kode | Fitur                                    | Status                           |
+| ---- | ---------------------------------------- | -------------------------------- |
+| F-01 | Daftar gerakan sholat                    | ✅ `index.php`                   |
+| F-02 | Detail gerakan (gambar + bacaan 4 lapis) | ✅ `gerakan.php`                 |
+| F-03 | Audio bacaan                             | ✅ tag `<audio>` per bacaan      |
+| F-04 | Opsi video                               | ✅ tombol toggle                 |
+| F-05 | Navigasi Next/Previous                   | ✅                               |
+| F-06 | Autoplay berurutan                       | ✅ `assets/js/app.js`            |
+| F-07 | Mode Dewasa & Anak                       | ✅ toggle di header, session PHP |
+| F-08 | Identitas di header                      | ✅ dari tabel `pengaturan`       |
+| F-09 | Konten dari database                     | ✅ PDO, tidak hardcode           |
 
-Copy folder sholat-app ke htdocs (kalau pakai XAMPP) atau www (kalau pakai Laragon)
-Buka phpMyAdmin, import file database/schema.sql
-Buka config/db.php, sesuaikan DB_HOST, DB_NAME, DB_USER, DB_PASS dengan punya kalian. Default XAMPP biasanya root tanpa password.
-Akses lewat browser: http://localhost/sholat-app/
+## 7. Catatan Konten
 
-
-Cara Deploy ke InfinityFree
-
-
-Bikin database MySQL baru di cPanel InfinityFree
-Import database/schema.sql lewat phpMyAdmin yang disediakan
-Upload semua isi folder sholat-app ke htdocs lewat File Manager
-Edit config/db.php, ganti kredensial sesuai yang InfinityFree kasih (host-nya biasanya bukan localhost, cek di cPanel)
-
-
-Menambahkan Konten
-
-Identitas kelompok — buka tabel pengaturan di phpMyAdmin, edit baris pertama (nama kelompok, mata kuliah, dosen, dll). Ini otomatis muncul di header.
-
-Audio bacaan — taruh file audio di assets/audio/, namanya harus sama dengan yang ada di kolom audio_file pada tabel bacaan.
-
-Video gerakan — isi kolom video_url di tabel gerakan dengan link YouTube (format embed) atau path file video lokal kalau videonya diupload sendiri ke assets/video/.
-
-Status Fitur
-
-
-Daftar gerakan sholat — selesai
-Detail gerakan (gambar + 4 lapis bacaan: arab, transliterasi, terjemahan dewasa, terjemahan anak) — selesai
-Audio per bacaan — selesai
-Video per gerakan (opsional, toggle) — selesai
-Navigasi next/previous antar gerakan — selesai
-Mode dewasa & anak — selesai
-Konten diambil dari database, bukan hardcode — selesai
-
-
-Catatan
-
-Ada 13 gerakan yang dicakup: Niat, Takbiratul Ihram, Doa Iftitah, Al-Fatihah, Surah pendek, Ruku', I'tidal, Sujud (dua kali), Duduk di antara dua sujud, Tasyahud Awal, Tasyahud Akhir, dan Salam.
+Bacaan mencakup 13 langkah: Niat, Takbiratul Ihram, Doa Iftitah, Al-Fatihah,
+Surah pendek (Al-Ikhlas), Ruku', I'tidal, Sujud (2x), Duduk di antara dua
+sujud, Tasyahud Awal, Tasyahud Akhir, dan Salam. Silakan sesuaikan/lengkapi
+teks di `database/schema.sql` sesuai mazhab/referensi yang dipakai dosen
+kalian.
