@@ -6,16 +6,15 @@ $identitas = getIdentitas();
 require __DIR__ . '/includes/header.php';
 ?>
 
-<section class="hero">
-  <div class="container">
-    <h1><?= $mode === 'anak' ? 'Yuk, Belajar Gerakan Sholat!' : 'Panduan Gerakan &amp; Bacaan Sholat' ?></h1>
-    <p>
-      <?= $mode === 'anak'
-        ? 'Klik gerakan di bawah ini satu-satu, dari berdiri sampai salam, biar makin lancar sholatnya.'
-        : 'Ikuti setiap gerakan secara berurutan lengkap dengan bacaan, transliterasi, terjemahan, dan audio.' ?>
-    </p>
+<?php
+require_once __DIR__ . '/includes/functions.php';
+$mode = getMode();
+$semuaGerakan = getAllGerakan();
+$identitas = getIdentitas();
+require __DIR__ . '/includes/header.php';
+?>
 
-    <!-- Signature element: tasbih / prayer-bead progress tracker -->
+    <!-- Signature Element : Tasbih/prayer-bead Progress Tracker -->
     <div class="tasbih" aria-label="Urutan gerakan sholat">
       <?php foreach ($semuaGerakan as $i => $g): ?>
         <a href="gerakan.php?u=<?= $g['urutan'] ?>" class="tasbih-bead" title="<?= htmlspecialchars($mode === 'anak' ? $g['nama_anak'] : $g['nama_dewasa']) ?>">
