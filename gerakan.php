@@ -33,8 +33,8 @@ require __DIR__ . '/includes/header.php';
   <div class="detail-grid">
     <div class="detail-image">
       <?php
-        // Pilih gambar sesuai mode aktif. Kalau mode anak tapi gambar_anak
-        // belum diisi, otomatis pakai gambar dewasa sebagai cadangan.
+        // Pilih Gambar Sesuai Mode Aktif. Kalau mode anak tapi gambar_anak
+        // Belum Di isi, Otomatis pakai gambar dewasa sebagai cadangan.
         $gambarDipakai = ($mode === 'anak' && !empty($gerakan['gambar_anak']))
             ? $gerakan['gambar_anak']
             : $gerakan['gambar'];
