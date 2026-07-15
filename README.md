@@ -39,7 +39,7 @@ Buka phpMyAdmin, masuk ke tabel `pengaturan`, edit baris pertama dan isi:
 - `mata_kuliah`
 - `nama_dosen`
 
-Data ini otomatis muncul di header tiap halaman. Nilai bawaan di `schema.sql` cuma placeholder ("Kelompok 1", dst), jangan lupa diganti.
+Data ini otomatis muncul di header tiap halaman.
 
 ## 3. Nambahin Audio & Video
 
@@ -97,4 +97,4 @@ sholat-app/
 
 ## 7. Catatan Isi Konten
 
-Bacaan yang dicover ada 13 langkah: Niat, Takbiratul Ihram, Doa Iftitah, Al-Fatihah, surah pendek (Al-Ikhlas), Ruku', I'tidal, Sujud (2x), Duduk di antara dua sujud, Tasyahud Awal, Tasyahud Akhir, dan Salam. Urutan dan lafalnya mengikuti tuntunan di HPT Muhammadiyah — kalau kelompok kalian mau pakai referensi lain atau perlu nambah catatan dari dosen, tinggal edit langsung teksnya di `database/schema.sql`.
+Bacaan yang dicover ada 13 langkah: Niat, Takbiratul Ihram, Doa Iftitah, Al-Fatihah, surah pendek (Al-Ikhlas), Ruku', I'tidal, Sujud (2x), Duduk di antara dua sujud, Tasyahud Awal, Tasyahud Akhir, dan Salam. Urutan dan lafalnya mengikuti tuntunan di HPT Muhammadiyah.
