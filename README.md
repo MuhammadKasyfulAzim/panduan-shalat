@@ -2,7 +2,7 @@
 
 Ini adalah aplikasi web sederhana buat belajar gerakan dan bacaan sholat, dibuat pakai PHP Native + MySQL. Ada dua mode tampilan: Dewasa dan Anak-anak, jadi bisa dipakai buat berbagai kalangan usia.
 
-Demo bisa dicoba langsung di sini: https://panduansholat.gamer.free/index.php?mode=dewasa
+Demo Bisa Di ciba di sini ya : https://panduansholat.gamer.free/index.php?mode=dewasa
 
 ## Sumber Rujukan
 
